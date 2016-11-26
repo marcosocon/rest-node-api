@@ -1,0 +1,22 @@
+{
+  "name": "rest-node-api",
+  "version": "1.0.0",
+  "description": "A restful API written in NodeJS",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcosocon/rest-node-api.git"
+  },
+  "author": "Marcos Ocon <oconmarcos97@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/marcosocon/rest-node-api/issues"
+  },
+  "homepage": "https://github.com/marcosocon/rest-node-api#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
