@@ -11,7 +11,13 @@ var bookRouter = express.Router();
 
 bookRouter.route('/Books')
 	.get(function(req, res){
-		Book.find(function(err, books){
+		var query = {};
+		if(req.query.author) query.author = req.query.author;
+		if(req.query.genre) query.genre = req.query.genre;
+		if(req.query.read) query.read = req.query.read;
+		if(req.query.title) query.title = req.query.title;
+		
+		Book.find(query, function(err, books){
 			if(!err){
 				res.json(books);
 			} else {
