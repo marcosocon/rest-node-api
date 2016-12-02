@@ -9,7 +9,7 @@ var db = mongoose.connect('mongodb://localhost/bookAPI');
 
 var bookRouter = express.Router();
 
-bookRouter.route('/Books')
+bookRouter.route('/books')
 	.get(function(req, res){
 		var query = {};
 		if(req.query.author) query.author = req.query.author;
@@ -24,7 +24,17 @@ bookRouter.route('/Books')
 				res.status(500).send(err);
 			}
 		});
-	})
+	});
+bookRouter.route('/books/:bookId')
+	.get(function(req, res){
+		Book.findById(req.params.bookId, function(err, book){
+			if(!err){
+				res.json(book);
+			} else {
+				res.status(500).send(err);
+			}
+		});
+	});
 
 app.use('/api', bookRouter);
 
