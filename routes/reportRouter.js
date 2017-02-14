@@ -45,6 +45,15 @@ var routes = function(Report){
 				}
 			});
 		})
+		.delete(function (req, res) {
+			res.report.remove(function(err){
+				if(err){
+					res.status(500).send(err);
+				} else {
+					res.json({message: 'Successfully deleted'});
+				}
+			});
+		})
 		.patch(function(req, res){
 			if(req.body._id){
 				delete req.body._id;
