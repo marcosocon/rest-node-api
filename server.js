@@ -3,16 +3,16 @@ var mongoose = require('mongoose');
 var path = require("path");
 var bodyParser = require('body-parser');
 var app = express();
-var Book = require('./models/bookModel');
-var bookRouter = require('./routes/bookRoutes')(Book);
+var Report = require('./models/reportModel');
+var reportRouter = require('./routes/reportRouter')(Report);
 
 //DB CONNECTION
-var db = mongoose.connect('mongodb://localhost/bookAPI');
+var db = mongoose.connect('mongodb://localhost/reportAPI');
 
 //MIDDLEWARE CONFIGURATION
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use('/api', bookRouter);
+app.use('/api', reportRouter);
 
 //SERVE
 var port = process.env.PORT || 8080;
