@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var path = require("path");
+var bcrypt = require('bcrypt');
 var bodyParser = require('body-parser');
 var app = express();
 var Report = require('./models/reportModel');
