@@ -1,7 +1,9 @@
 var express = require('express');
+var config = require('./../config/database');
+
 
 //ROUTES FOR REPORTS
-var routes = function(Report, User){
+var routes = function(Report, User, JWT){
 	var apiRoutes = express.Router();
 	apiRoutes.use('/reports/:reportId', function(req, res, next){
 		Report.findById(req.params.reportId, function(err, report){
@@ -31,13 +33,25 @@ var routes = function(Report, User){
 				}
 				res.json({success: true, msg: 'User created successfully'});
 			});
-		})
-		.get(function (req, res) {
-			Report.find({}, function (err, reports) {
-				if(!err){
-					res.json(reports);
+		});
+
+	apiRoutes.route('/authenticate')
+		.post(function (req, res) {
+			User.findOne({username: req.body.username}, function (err, user) {
+				if (err) {
+					throw err;
+				}
+				if (!user) {
+					res.send({success: false, msg: 'Authentication Failed, user not found.'});
 				} else {
-					res.status(500).send(err);
+					user.comparePassword(req.body.password, function (err, isMatch) {
+						if (isMatch && !err) {
+							var token = JWT.encode(user, config.secret);
+							res.json({success: true, token: 'JWT ' + token});
+						} else {
+							res.send({success: false, msg: 'Authentication Failed, wrong password'});
+						}
+					});
 				}
 			});
 		});
@@ -57,6 +71,7 @@ var routes = function(Report, User){
 				}
 			});
 		});
+
 	apiRoutes.route('/reports/:reportId')
 		.put(function (req, res) {
 			res.report.description = req.body.description;
@@ -98,6 +113,8 @@ var routes = function(Report, User){
 		.get(function (req, res) {
 			res.json(res.report);
 		});
+
 	return apiRoutes;
 };
+
 module.exports = routes;

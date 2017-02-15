@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var path = require("path");
 var bcrypt = require('bcrypt');
 var passport = require('passport');
-var jwt = require('jwt-simple');
+var JWT = require('jwt-simple');
 var morgan = require('morgan');
 var bcrypt = require('bcrypt');
 var config = require('./config/database');
@@ -11,7 +11,7 @@ var bodyParser = require('body-parser');
 var app = express();
 var Report = require('./models/reportModel');
 var User = require('./models/userModel');
-var apiRoutes = require('./routes/apiRoutes')(Report, User);
+var apiRoutes = require('./routes/apiRoutes')(Report, User, JWT);
 
 //DB CONNECTION
 var db = mongoose.connect(config.database);
@@ -39,6 +39,6 @@ app.use('/api', apiRoutes);
 
 //SERVE
 var port = process.env.PORT || 8080;
-app.listen(port, function(){
-	console.log('Gulp is running the app in port  ' + port);
+app.listen(port, function () {
+	console.log('Gulp is running the app in port ' + port);
 });
