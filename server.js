@@ -2,15 +2,23 @@ var express = require('express');
 var mongoose = require('mongoose');
 var path = require("path");
 var bcrypt = require('bcrypt');
+var passport = require('passport');
+var jwt = require('jwt-simple');
+var morgan = require('morgan');
+var bcrypt = require('bcrypt');
+var config = require('./config/database');
 var bodyParser = require('body-parser');
 var app = express();
 var Report = require('./models/reportModel');
-var reportRouter = require('./routes/reportRouter')(Report);
+var User = require('./models/userModel');
+var apiRoutes = require('./routes/apiRoutes')(Report, User);
 
 //DB CONNECTION
-var db = mongoose.connect('mongodb://localhost/reportAPI');
+var db = mongoose.connect(config.database);
 
 //MIDDLEWARE CONFIGURATION
+app.use(morgan('dev'));
+app.use(passport.initialize());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // Add headers
@@ -27,7 +35,7 @@ app.use(function (req, res, next) {
 	// Pass to next layer of middleware
 	next();
 });
-app.use('/api', reportRouter);
+app.use('/api', apiRoutes);
 
 //SERVE
 var port = process.env.PORT || 8080;
