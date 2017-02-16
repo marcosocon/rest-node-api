@@ -1,26 +1,31 @@
 {
-  "name": "rest-node-api",
-  "version": "1.0.0",
-  "description": "A restful API written in NodeJS",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marcosocon/rest-node-api.git"
-  },
-  "author": "Marcos Ocon <oconmarcos97@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/marcosocon/rest-node-api/issues"
-  },
-  "homepage": "https://github.com/marcosocon/rest-node-api#readme",
-  "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "gulp": "^3.9.1",
-    "gulp-nodemon": "^2.2.1",
-    "mongoose": "^4.7.1"
-  }
+	"name": "rest-node-api",
+	"version": "1.0.0",
+	"description": "A restful API written in NodeJS",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/marcosocon/rest-node-api.git"
+	},
+	"author": "Marcos Ocon <oconmarcos97@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/marcosocon/rest-node-api/issues"
+	},
+	"homepage": "https://github.com/marcosocon/rest-node-api#readme",
+	"dependencies": {
+		"bcrypt": "^1.0.2",
+		"body-parser": "^1.15.2",
+		"express": "^4.14.0",
+		"gulp": "^3.9.1",
+		"gulp-nodemon": "^2.2.1",
+		"jsonwebtoken": "^7.3.0",
+		"mongoose": "^4.7.1",
+		"morgan": "^1.8.1",
+		"passport": "^0.3.2",
+		"passport-jwt": "^2.2.1"
+	}
 }

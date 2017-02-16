@@ -1,6 +1,7 @@
 var express = require('express');
+var ExtractJwt = require('passport-jwt').ExtractJwt;
+var passport = require('passport');
 var config = require('./../config/database');
-
 
 //ROUTES FOR REPORTS
 var routes = function(Report, User, JWT){
@@ -46,7 +47,7 @@ var routes = function(Report, User, JWT){
 				} else {
 					user.comparePassword(req.body.password, function (err, isMatch) {
 						if (isMatch && !err) {
-							var token = JWT.encode(user, config.secret);
+							var token = JWT.sign(user, config.secret);
 							res.json({success: true, token: 'JWT ' + token});
 						} else {
 							res.send({success: false, msg: 'Authentication Failed, wrong password'});
@@ -54,6 +55,22 @@ var routes = function(Report, User, JWT){
 					});
 				}
 			});
+		});
+
+	function cleanUserObject (user) {
+		user._id = undefined;
+		user.password = undefined;
+		return user;
+	}
+
+	apiRoutes.route('/user')
+		.get(passport.authenticate('jwt', { session: false }), function (req, res) {
+			if (req.user) {
+				cleanUserObject(req.user);
+				res.json({success: true, user: req.user, msg: 'There you go!'});
+			} else {
+				res.status(403).send({success: false, msg: 'No token provided.'});
+			}
 		});
 
 	apiRoutes.route('/reports')

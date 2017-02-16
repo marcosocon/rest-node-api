@@ -1,16 +1,11 @@
 var express = require('express');
+var app = express();
 var mongoose = require('mongoose');
-var path = require("path");
-var bcrypt = require('bcrypt');
 var passport = require('passport');
-var JWT = require('jwt-simple');
+var passportJwt = require('./config/passport')(passport);
 var morgan = require('morgan');
-var bcrypt = require('bcrypt');
 var config = require('./config/database');
 var bodyParser = require('body-parser');
-var app = express();
-var Report = require('./models/reportModel');
-var User = require('./models/userModel');
 var apiRoutes = require('./routes/apiRoutes')(Report, User, JWT);
 
 //DB CONNECTION
