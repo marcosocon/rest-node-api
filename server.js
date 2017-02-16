@@ -6,6 +6,9 @@ var passportJwt = require('./config/passport')(passport);
 var morgan = require('morgan');
 var config = require('./config/database');
 var bodyParser = require('body-parser');
+var Report = require('./models/reportModel');
+var User = require('./models/userModel');
+var JWT = require('jsonwebtoken');
 var apiRoutes = require('./routes/apiRoutes')(Report, User, JWT);
 
 //DB CONNECTION
