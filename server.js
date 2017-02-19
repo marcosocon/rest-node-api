@@ -6,10 +6,9 @@ var passportJwt = require('./config/passport')(passport);
 var morgan = require('morgan');
 var config = require('./config/database');
 var bodyParser = require('body-parser');
-var Report = require('./models/reportModel');
 var User = require('./models/userModel');
 var JWT = require('jsonwebtoken');
-var apiRoutes = require('./routes/apiRoutes')(Report, User, JWT);
+var apiRoutes = require('./routes/apiRoutes')(User, JWT);
 
 //DB CONNECTION
 var db = mongoose.connect(config.database);
@@ -33,7 +32,7 @@ app.use(function (req, res, next) {
 	// Pass to next layer of middleware
 	next();
 });
-app.use('/api', apiRoutes);
+app.use('/', apiRoutes);
 
 //SERVE
 var port = process.env.PORT || 8080;

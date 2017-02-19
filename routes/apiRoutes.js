@@ -4,20 +4,20 @@ var passport = require('passport');
 var config = require('./../config/database');
 
 //ROUTES FOR REPORTS
-var routes = function(Report, User, JWT){
+var routes = function(User, JWT){
 	var apiRoutes = express.Router();
-	apiRoutes.use('/reports/:reportId', function(req, res, next){
-		Report.findById(req.params.reportId, function(err, report){
-			if(err){
-				res.status(500).send(err);
-			} else if(report) {
-				res.report = report;
-				next();
-			} else {
-				res.status(404).send('Report not found.');
-			}
-		});
-	});
+	// apiRoutes.use('user/reports/:reportId', function(req, res, next){
+	// 	Report.findById(req.params.reportId, function(err, report){
+	// 		if(err){
+	// 			res.status(500).send(err);
+	// 		} else if(report) {
+	// 			res.report = report;
+	// 			next();
+	// 		} else {
+	// 			res.status(404).send('Report not found.');
+	// 		}
+	// 	});
+	// });
 
 	apiRoutes.route('/signup')
 		.post(function (req, res) {
@@ -74,23 +74,25 @@ var routes = function(Report, User, JWT){
 		});
 
 	apiRoutes.route('/reports')
-		.post(function (req, res) {
-			var report = new Report(req.body);
-			report.save();
-			res.status(201).json(report);
-		})
-		.get(function(req, res){
-			Report.find({}, function (err, reports) {
-				if(!err){
-					res.json(reports);
-				} else {
-					res.status(500).send(err);
+		.post(passport.authenticate('jwt', { session: false }), function (req, res) {
+			User.findById(req.user.id, function (err, user) {
+				if (err || !user) {
+					return res.status(404).send('Error: User not found.');
 				}
+				var report = req.body;
+				user.reports.push(report);
+				user.save();
+				res.status(201).json(user.reports);
 			});
+		})
+		.get(passport.authenticate('jwt', { session: false }), function(req, res){
+			if (req.user) {
+ 				res.json(req.user.reports);
+			}
 		});
 
 	apiRoutes.route('/reports/:reportId')
-		.put(function (req, res) {
+		.put(passport.authenticate('jwt', { session: false }), function (req, res) {
 			res.report.description = req.body.description;
 			res.report.date = req.body.date;
 			res.report.time = req.body.time;
@@ -103,7 +105,7 @@ var routes = function(Report, User, JWT){
 				}
 			});
 		})
-		.delete(function (req, res) {
+		.delete(passport.authenticate('jwt', { session: false }), function (req, res) {
 			res.report.remove(function (err) {
 				if(err){
 					res.status(500).send(err);
@@ -112,7 +114,7 @@ var routes = function(Report, User, JWT){
 				}
 			});
 		})
-		.patch(function (req, res) {
+		.patch(passport.authenticate('jwt', { session: false }), function (req, res) {
 			if(req.body._id){
 				delete req.body._id;
 			}
@@ -127,7 +129,7 @@ var routes = function(Report, User, JWT){
 				}
 			});
 		})
-		.get(function (req, res) {
+		.get(passport.authenticate('jwt', { session: false }), function (req, res) {
 			res.json(res.report);
 		});
 

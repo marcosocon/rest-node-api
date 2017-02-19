@@ -2,6 +2,16 @@ var mongoose = require('mongoose');
 var bcrypt = require('bcrypt');
 var Schema = mongoose.Schema;
 
+var Reports = new Schema({
+	description: String,
+	time: Number,
+	date: String,
+	billable: {
+		type: Boolean,
+		default: true
+	}
+});
+
 var UserModel = new Schema({
 	username: {
 		type: String,
@@ -11,7 +21,8 @@ var UserModel = new Schema({
 	password: {
 		type: String,
 		required: true
-	}
+	},
+	reports: [Reports]
 });
 
 UserModel.pre('save', function (next) {
