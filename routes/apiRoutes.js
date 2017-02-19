@@ -30,9 +30,9 @@ var routes = function(User, JWT){
 			});
 			newUser.save(function (err) {
 				if (err) {
-					return res.json({success: false, msg: 'Username already exists'});
+					return res.status(400).json({success: false, msg: 'Username already exists'});
 				}
-				res.json({success: true, msg: 'User created successfully'});
+				res.status(200).json({success: true, msg: 'User created successfully'});
 			});
 		});
 
@@ -43,14 +43,14 @@ var routes = function(User, JWT){
 					throw err;
 				}
 				if (!user) {
-					res.send({success: false, msg: 'Authentication Failed, user not found.'});
+					res.status(403).send({success: false, msg: 'Authentication Failed, invalid username or password.'});
 				} else {
 					user.comparePassword(req.body.password, function (err, isMatch) {
 						if (isMatch && !err) {
 							var token = JWT.sign(user, config.secret);
-							res.json({success: true, token: 'JWT ' + token});
+							res.status(200).json({success: true, token: 'JWT ' + token});
 						} else {
-							res.send({success: false, msg: 'Authentication Failed, wrong password'});
+							res.status(403).send({success: false, msg: 'Authentication Failed, invalid username or password.'});
 						}
 					});
 				}
